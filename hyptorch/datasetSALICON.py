@@ -17,7 +17,7 @@ from torchvision import transforms
 size = (224, 224)
 # BGR MODE
 mean = [103.939, 116.779, 123.68]
-PATH_SALICON = "D:\Downloads\SALICON_DATA"
+PATH_SALICON = "/content/drive/MyDrive/SALICON_DATA"
 
 img_sizes = []
 
@@ -101,7 +101,7 @@ class SALICON(Dataset):
         # image = cv2.cvtColor(cv2.imread(rgb_ima), cv2.COLOR_BGR2GRAY)
         image, saliency = imageProcessing(image, saliency)
 
-        return saliency, image
+        return image, saliency
 
 
 if __name__ == '__main__':

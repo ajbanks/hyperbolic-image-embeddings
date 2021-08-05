@@ -63,9 +63,9 @@ def batched_delta_hyp(X, n_tries=10, batch_size=1500):
         print("calcularted batch distance matrix \n")
         diam = np.max(distmat)
         delta_rel = delta_hyp(distmat) / diam
-        print("calcularted batch delta \n")
+        print("\n\n calcularted batch delta: " + str(delta_rel))
         vals.append(delta_rel)
-    return np.mean(vals), np.std(vals)
+    return np.mean(vals) #, np.std(vals)
 
 
 class Flatten(nn.Module):
@@ -96,7 +96,7 @@ def get_delta(loader):
             print([len(batch[0]), len(batch[0][1]), len(batch)])
             print(batch.shape)
             [all_features.append([torch.flatten(bat).cpu().numpy()]) for bat in batch]
-            # all_features.append(vgg_part(batch).detach().cpu().numpy())
+            #all_features.append(vgg_part(batch).detach().cpu().numpy())
         print("processed " + str(i))
 
     # for data in loader:
@@ -105,7 +105,7 @@ def get_delta(loader):
     print("\n\n all features processed \n\n")
 
     all_features = np.concatenate(all_features)
-    idx = np.random.choice(len(all_features), 1500)
+    idx = np.random.choice(len(all_features), 50)
     all_features_small = all_features[idx]
     print(all_features.shape)
     # print(len(all_features[0]))
@@ -117,10 +117,10 @@ def get_delta(loader):
     # dists = distance_matrix(all_features_small, all_features_small)
     # print(dists)
     print("\n\n calculating hyperbolicity \n\n")
-    delta = batched_delta_hyp(all_features)
+    delta = batched_delta_hyp(all_features, batch_size=len(all_features))
     print("\n\n calculated hyperbolicity \n\n")
     # diam = np.max(dists)
-    return delta, diam
+    return delta #, diam
 
 test_matrix = [[0,0],[0,1], [1,0],[1,1]]
 test_matrix = np.random.rand(224,224)

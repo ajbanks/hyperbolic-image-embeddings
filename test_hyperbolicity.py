@@ -23,6 +23,8 @@ def test_salicon_hyperbolicity():
     return delta.get_delta(train_loader)
 
 def test_cifar_hyperbolicity():
+    use_cuda = torch.cuda.is_available()
+    kwargs = {"num_workers": 1, "pin_memory": True} if use_cuda else {}
     transform = transforms.Compose(
         [transforms.Resize((224,224),interpolation=Image.NEAREST), transforms.ToTensor()])
 
@@ -31,7 +33,7 @@ def test_cifar_hyperbolicity():
     trainset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                             download=True, transform=transform)
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
-                                              shuffle=True, num_workers=2)
+                                              shuffle=True, num_workers=2. **kwargs)
 
 
     # for images, _ in trainloader:
@@ -46,8 +48,8 @@ def test_cifar_hyperbolicity():
 
 def run():
     torch.multiprocessing.freeze_support()
-    print("the hyperbolicity of SALICON is: " + test_salicon_hyperbolicity())
-    # print( "the hyperbolicity of cifar is: " + test_cifar_hyperbolicity())
+    print("the hyperbolicity of SALICON is: " + str(test_salicon_hyperbolicity()))
+    print( "the hyperbolicity of cifar is: " + str(test_cifar_hyperbolicity()))
 
 if __name__ == '__main__':
     run()
