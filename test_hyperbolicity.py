@@ -29,11 +29,14 @@ def test_cifar_hyperbolicity():
         [transforms.Resize((224,224),interpolation=Image.NEAREST), transforms.ToTensor()])
 
     batch_size = 32
-
+    
+    
     trainset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                             download=True, transform=transform)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size,
-                                              shuffle=True, num_workers=2. **kwargs)
+    odds = list(range(1, len(trainset), 2))
+    trainset_1 = torch.utils.data.Subset(trainset, evens)
+    trainloader = torch.utils.data.DataLoader(trainset_1, batch_size=batch_size,
+                                              shuffle=True, num_workers=2)
 
 
     # for images, _ in trainloader:
@@ -48,6 +51,7 @@ def test_cifar_hyperbolicity():
 
 def run():
     torch.multiprocessing.freeze_support()
+    print( "the hyperbolicity of cifar is: " + str(test_cifar_hyperbolicity()))
     print("the hyperbolicity of SALICON is: " + str(test_salicon_hyperbolicity()))
     print( "the hyperbolicity of cifar is: " + str(test_cifar_hyperbolicity()))
 

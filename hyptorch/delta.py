@@ -54,7 +54,7 @@ def delta_hyp(dismat):
     return np.max(maxmin - XY_p)
 
 
-def batched_delta_hyp(X, n_tries=10, batch_size=1500):
+def batched_delta_hyp(X, n_tries=5, batch_size=1500):
     vals = []
     for i in tqdm(range(n_tries)):
         idx = np.random.choice(len(X), batch_size)
@@ -95,8 +95,8 @@ def get_delta(loader):
             batch = batch.to(device)
             print([len(batch[0]), len(batch[0][1]), len(batch)])
             print(batch.shape)
-            [all_features.append([torch.flatten(bat).cpu().numpy()]) for bat in batch]
-            #all_features.append(vgg_part(batch).detach().cpu().numpy())
+            #[all_features.append([torch.flatten(bat).cpu().numpy()]) for bat in batch]
+            all_features.append(vgg_part(batch).detach().cpu().numpy())
         print("processed " + str(i))
 
     # for data in loader:
@@ -105,7 +105,7 @@ def get_delta(loader):
     print("\n\n all features processed \n\n")
 
     all_features = np.concatenate(all_features)
-    idx = np.random.choice(len(all_features), 50)
+    idx = np.random.choice(len(all_features), 10)
     all_features_small = all_features[idx]
     print(all_features.shape)
     # print(len(all_features[0]))
