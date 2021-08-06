@@ -105,7 +105,7 @@ def get_delta(loader):
     print("\n\n all features processed \n\n")
 
     all_features = np.concatenate(all_features)
-    idx = np.random.choice(len(all_features), 10)
+    idx = np.random.choice(len(all_features), 50)
     all_features_small = all_features[idx]
     print(all_features.shape)
     # print(len(all_features[0]))

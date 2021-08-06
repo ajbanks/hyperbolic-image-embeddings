@@ -33,8 +33,8 @@ def test_cifar_hyperbolicity():
     
     trainset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                             download=True, transform=transform)
-    odds = list(range(1, len(trainset), 2))
-    trainset_1 = torch.utils.data.Subset(trainset, evens)
+    odds = list(range(1, len(trainset) - 9000, 2))
+    trainset_1 = torch.utils.data.Subset(trainset, odds)
     trainloader = torch.utils.data.DataLoader(trainset_1, batch_size=batch_size,
                                               shuffle=True, num_workers=2)
 
