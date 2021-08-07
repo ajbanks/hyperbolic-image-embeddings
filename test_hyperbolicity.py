@@ -92,8 +92,8 @@ def test_cifar_hyperbolicity_original():
 
 def run():
     torch.multiprocessing.freeze_support()
-    print( "the hyperbolicity of cifar is: " + str(test_cifar_hyperbolicity_original()))
-    # print("the hyperbolicity of SALICON is: " + str(test_salicon_hyperbolicity_original()))
+    print( "the hyperbolicity of cifar is: " + str(test_cifar_hyperbolicity()))
+    print("the hyperbolicity of SALICON is: " + str(test_salicon_hyperbolicity()))
     # print( "the hyperbolicity of cifar is: " + str(test_cifar_hyperbolicity()))
 
 if __name__ == '__main__':
