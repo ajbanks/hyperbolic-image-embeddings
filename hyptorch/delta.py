@@ -109,7 +109,37 @@ def get_delta_original(loader):
             all_features.append(vgg_part(batch).detach().cpu().numpy())
 
     all_features = np.concatenate(all_features)
-    idx = np.random.choice(len(all_features), 50)
+    idx = np.random.choice(len(all_features), 500)
+    all_features_small = all_features[idx]
+    # distance_matrix Returns the matrix of all pair-wise distances between two arrays
+    dists = distance_matrix(all_features_small, all_features_small)
+    delta = delta_hyp(dists)
+    """np.max is just an alias for np.amax. This function only works on a 
+    single input array and finds the value of maximum element in that entire
+    array (returning a scalar). Alternatively, it takes an axis argument 
+    and will find the maximum value along an axis 
+    of the input array (returning a new array).
+    https://stackoverflow.com/questions/33569668/numpy-max-vs-amax-vs-maximum
+    """
+    diam = np.max(dists)
+    return (2 * delta) / diam
+    # return delta, diam
+
+
+def get_delta_no_vgg(loader):
+    """
+    computes delta value for image data by extracting features using VGG network;
+    input -- data loader for images
+    """
+    all_features = []
+    for i, (batch, _) in enumerate(loader):
+        with torch.no_grad():
+            batch = batch.to(device)
+            [all_features.append([torch.flatten(bat).cpu().numpy()]) for bat in batch]
+            # all_features.append(vgg_part(batch).detach().cpu().numpy())
+
+    all_features = np.concatenate(all_features)
+    idx = np.random.choice(len(all_features), 500)
     all_features_small = all_features[idx]
     # distance_matrix Returns the matrix of all pair-wise distances between two arrays
     dists = distance_matrix(all_features_small, all_features_small)
